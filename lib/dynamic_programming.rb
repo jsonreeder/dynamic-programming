@@ -22,7 +22,7 @@ class DPProblems
   # needed to make change for the given amount.  You may assume you have an unlimited supply of each type of coin.
   # If it's not possible to make change for a given amount, return nil.  You may assume that the coin array is sorted
   # and in ascending order.
-  def make_change(amt, coins, coin_cache = {0 => 0})
+  def make_change(amt, coins)
     return 0 / 0.0 if amt < 0
     @cache[0] = 0
 
@@ -44,6 +44,16 @@ class DPProblems
   # to include are items 0 and 1, whose values are 10 and 4 respectively.  Duplicates are not allowed -- that is, you
   # can only include a particular item once.
   def knapsack(weights, values, capacity)
+    @cache[0] = 0
+    @cache[capacity] if @cache[capacity]
+    max_val = 0
+
+    weights.each_with_index do |weight, idx|
+      cur_val = values[idx]
+      max_val = cur_val if weight <= capacity && cur_val > max_val
+    end
+
+    max_val
   end
 
   # Stair Climber: a frog climbs a set of stairs.  It can jump 1 step, 2 steps, or 3 steps at a time.

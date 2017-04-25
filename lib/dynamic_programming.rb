@@ -5,12 +5,17 @@
 
 class DPProblems
   def initialize
-    # Use this to create any instance variables you may need
+    @cache = {}
   end
 
   # Takes in a positive integer n and returns the nth Fibonacci number
   # Should run in O(n) time
   def fibonacci(n)
+    @cache[1] = 1
+    @cache[2] = 1
+    return @cache[n] if @cache[n]
+
+    @cache[n] = fibonacci(n - 1) + fibonacci(n - 2)
   end
 
   # Make Change: write a function that takes in an amount and a set of coins.  Return the minimum number of coins

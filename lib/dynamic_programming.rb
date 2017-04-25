@@ -23,6 +23,19 @@ class DPProblems
   # If it's not possible to make change for a given amount, return nil.  You may assume that the coin array is sorted
   # and in ascending order.
   def make_change(amt, coins, coin_cache = {0 => 0})
+    return 0 / 0.0 if amt < 0
+    @cache[0] = 0
+
+    return @cache[amt] if @cache[amt]
+    minimum = 0 / 0.0
+
+    coins.each do |coin|
+      attempt = make_change(amt - coin, coins) + 1
+      minimum = attempt unless minimum.is_a?(Integer)
+      minimum = attempt if attempt < minimum
+    end
+
+    @cache[amt] = minimum
   end
 
   # Knapsack Problem: write a function that takes in an array of weights, an array of values, and a weight capacity

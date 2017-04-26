@@ -1,3 +1,4 @@
+require 'byebug'
 # Dynamic Programming practice
 # NB: you can, if you want, define helper functions to create the necessary caches as instance variables in the constructor.
 # You may find it helpful to delegate the dynamic programming work itself to a helper method so that you can
@@ -82,20 +83,29 @@ class DPProblems
   # NB: this is similar to, but not the same as, make_change.  Try implementing this using the opposite
   # DP technique that you used in make_change -- bottom up if you used top down and vice versa.
   def stair_climb(n)
-    return [[1]] if n == 1
-    return [[]] if n.zero?
-    last_solution = stair_climb(n - 1)
-    climbs = []
-    last_solution.each do |sub|
-      appended = sub + [1]
-      prepended = [1] + sub
-      climbs << appended unless climbs.include?(appended)
-      climbs << prepended unless climbs.include?(prepended)
-    end
-    climbs << [2] if n == 2
-    climbs << [3] if n == 3
+    @cache = [
+      [[]],
+      [[1]],
+      [[1, 1], [2]]
+    ]
 
-    climbs
+    return @cache[n] if n < 3
+
+    (3..n).each do |i|
+      new_climbs = []
+
+      (1..3).each do |dist|
+        previous = @cache[i - dist]
+        previous.each do |climbs|
+          new_climb = [dist]
+          climbs.each { |climb| new_climb << climb }
+          new_climbs << new_climb
+        end
+      end
+      @cache << new_climbs
+    end
+
+    @cache.last
   end
 
   # String Distance: given two strings, str1 and str2, calculate the minimum number of operations to change str1 into

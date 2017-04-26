@@ -148,5 +148,48 @@ class DPProblems
       return 1
     end
 
+    way_found = false
+    best = maze.length * maze[0].length
+
+    possible_moves(maze, start).each do |move|
+      temp_maze = make_temp_maze(maze, start)
+      possible_path = maze_escape(temp_maze, move)
+      if possible_path.is_a?(Integer) && possible_path < best
+        way_found = true
+        best = possible_path
+      end
+    end
+
+    if way_found
+      @str_cache[start[0]][start[1]] = best + 1
+      return best + 1
+    else
+      @str_cache[start[0]][start[1]] = Float::INFINITY
+      return Float::INFINITY
+    end
+  end
+
+  def possible_moves(maze, pos)
+    x, y = pos
+    neighbors = [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]]
+    moves = []
+
+    neighbors.each do |coord|
+      x, y = coord
+      moves << coord if maze[x][y] == ' '
+    end
+
+    moves
+  end
+
+  def make_temp_maze(maze, filled_pos)
+    temp_maze = []
+    maze.each_with_index do |_, col|
+      temp_maze << []
+      maze[col].each { |el| temp_maze[col] << el }
+    end
+
+    temp_maze[filled_pos[0]][filled_pos[1]] = 'x'
+    temp_maze
   end
 end

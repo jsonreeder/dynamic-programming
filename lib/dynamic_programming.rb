@@ -44,16 +44,36 @@ class DPProblems
   # to include are items 0 and 1, whose values are 10 and 4 respectively.  Duplicates are not allowed -- that is, you
   # can only include a particular item once.
   def knapsack(weights, values, capacity)
-    @cache[0] = 0
-    @cache[capacity] if @cache[capacity]
-    max_val = 0
+    return 0 if capacity.zero? || weights.length.zero?
+    table = knapsack_helper(weights, values, capacity)
+    table[capacity][weights.length - 1]
+  end
 
-    weights.each_with_index do |weight, idx|
-      cur_val = values[idx]
-      max_val = cur_val if weight <= capacity && cur_val > max_val
+  def knapsack_helper(weights, values, capacity)
+    table = []
+
+    (0..capacity).each do |cap|
+      table[cap] = []
+
+      (0...weights.length).each do |weight|
+        if cap.zero?
+          table[cap][weight] = 0
+        elsif weight.zero?
+          table[cap][weight] = values[0]
+          table[cap][weight] = 0 if weights[0] > cap
+        else
+          option1 = table[cap][weight - 1]
+          if weights[weight] > cap
+            option2 = 0
+          else
+            option2 = table[cap - weights[weight]][weight - 1] + values[weight]
+          end
+          table[cap][weight] = [option1, option2].max
+        end
+      end
     end
 
-    max_val
+    table
   end
 
   # Stair Climber: a frog climbs a set of stairs.  It can jump 1 step, 2 steps, or 3 steps at a time.

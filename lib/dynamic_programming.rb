@@ -139,5 +139,13 @@ class DPProblems
   #             ['x', 'x', ' ', 'x']]
   # and the start is [1, 1], then the shortest escape route is [[1, 1], [1, 2], [2, 2]] and thus your function should return 3.
   def maze_escape(maze, start)
+    return @str_cache[start[0]][start[1]] if @str_cache[start[0]][start[1]]
+    starts_at_zero = start[0].zero? || start[1].zero?
+    starts_near_end = start[0] == maze.length - 1 || start[1] == maze[0].length - 1
+
+    if starts_at_zero || starts_near_end
+      @str_cache[start[0]][start[1]] = 1
+      return 1
+    end
   end
 end

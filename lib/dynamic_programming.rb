@@ -113,14 +113,22 @@ class DPProblems
   # str2.  Allowed operations are deleting a character ("abc" -> "ac", e.g.), inserting a character ("abc" -> "abac", e.g.),
   # and changing a single character into another ("abc" -> "abz", e.g.).
   def str_distance(str1, str2)
-    return @str_cache[str1][str2] if @str_cache[str1][str2]
-    if str1 == str2
-      @str_cache[str1][str2] = 0
-      return 0
-    end
-
     return str2.length unless str1
     return str1.length unless str2
+    return @str_cache[str1][str2] if @str_cache[str1][str2]
+
+    if str1 == str2
+      dist = 0
+    elsif str1[0] == str2[0]
+      dist = str_distance(str1[1..-1], str2[1..-1])
+    else
+      move_both = 1 + str_distance(str1[1..-1], str2[1..-1])
+      move_left = 1 + str_distance(str1[1..-1], str2)
+      move_right = 1 + str_distance(str1, str2[1..-1])
+      dist = [move_both, move_left, move_right].min
+    end
+
+    @str_cache[str1][str2] = dist
   end
 
   # Maze Traversal: write a function that takes in a maze (represented as a 2D matrix) and a starting

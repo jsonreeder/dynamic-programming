@@ -23,12 +23,12 @@ describe 'Make change' do
   end
 
   it 'handles a case with no solution' do
-    expect(dp.make_change(1, coins)).to equal(Float::INFINITY)
+    expect(dp.make_change(1, coins)).to eq(Float::INFINITY)
   end
 
   it 'handles recursive cases' do
     expect(dp.make_change(12, coins)).to equal(2)
-    expect(dp.make_change(3, coins)).to equal(true)
+    expect(dp.make_change(3, coins)).to eq(Float::INFINITY)
     expect(dp.make_change(54, coins)).to equal(6)
     expect(dp.make_change(1000, coins)).to equal(100)
   end

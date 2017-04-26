@@ -23,11 +23,11 @@ class DPProblems
   # If it's not possible to make change for a given amount, return nil.  You may assume that the coin array is sorted
   # and in ascending order.
   def make_change(amt, coins)
-    return 0 / 0.0 if amt < 0
+    return Float::INFINITY if amt < 0
     @cache[0] = 0
 
     return @cache[amt] if @cache[amt]
-    minimum = 0 / 0.0
+    minimum = Float::INFINITY
 
     coins.each do |coin|
       attempt = make_change(amt - coin, coins) + 1

@@ -7,6 +7,7 @@ require 'byebug'
 class DPProblems
   def initialize
     @cache = {}
+    @str_cache = Hash.new { |h, k| h[k] = {} }
   end
 
   # Takes in a positive integer n and returns the nth Fibonacci number
@@ -112,6 +113,14 @@ class DPProblems
   # str2.  Allowed operations are deleting a character ("abc" -> "ac", e.g.), inserting a character ("abc" -> "abac", e.g.),
   # and changing a single character into another ("abc" -> "abz", e.g.).
   def str_distance(str1, str2)
+    return @str_cache[str1][str2] if @str_cache[str1][str2]
+    if str1 == str2
+      @str_cache[str1][str2] = 0
+      return 0
+    end
+
+    return str2.length unless str1
+    return str1.length unless str2
   end
 
   # Maze Traversal: write a function that takes in a maze (represented as a 2D matrix) and a starting
